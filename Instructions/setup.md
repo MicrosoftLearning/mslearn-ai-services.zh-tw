@@ -22,7 +22,7 @@ lab:
 
 ### .NET Core SDK
 
-1. 從 https://dotnet.microsoft.com/download 下載並安裝 (下載 .NET Core SDK - 不只是執行階段)。 如果您要在自己的機器上執行本課程中的實驗室，應該要有 .NET 7.0。 這些實驗室已針對 .NET 7.0 進行測試，但 7.0 目前不受支援。 您可以使用 8.0，但可能會有一些小問題。 強烈建議使用託管的環境。
+1. 從 https://dotnet.microsoft.com/download 下載並安裝 (下載 .NET Core SDK - 不只是執行階段)。 如果您要在自己的機器上執行本課程中的實驗室，應該要有 .NET 8.0。
 
 ### C++ 可轉散發套件
 

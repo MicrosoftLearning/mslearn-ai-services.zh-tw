@@ -43,13 +43,16 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
 
 ## 管理驗證金鑰
 
-當您建立 Azure AI 服務資源時，會產生兩個驗證金鑰。 您可以在 Azure 入口網站中，或使用 Azure 命令列介面 (CLI) 來管理這些金鑰。
+當您建立 Azure AI 服務資源時，會產生兩個驗證金鑰。 您可以在 Azure 入口網站中，或使用 Azure 命令列介面 (CLI) 來管理這些金鑰。 
 
-1. 在 Azure 入口網站中，移至您的 Azure AI 服務資源，並檢視其 [金鑰和端點]**** 頁面。 此頁面包含您需要連線到資源的資訊，並從您開發的應用程式加以使用。 具體而言：
+1. 選擇取得驗證金鑰和端點的方法： 
+
+    **使用 Azure 入口網站**，在 Azure 入口網站中移至您的 Azure AI 服務資源，並檢視其**金鑰和端點**頁面。 此頁面包含您需要連線到資源的資訊，並從您開發的應用程式加以使用。 具體而言：
     - 用戶端應用程式可以傳送要求的 HTTP *端點*。
     - 兩個可用於驗證的*金鑰* (用戶端應用程式可以使用任一金鑰。 常見的做法是將一個金鑰用於開發，而將另一個金鑰用於實際執行環境。 開發人員完成其工作後，您可以輕鬆重新產生開發金鑰，以防止繼續存取)。
     - 裝載資源的*位置*。 這對於某些 API (但非所有) 的要求而言是必要的。
-2. 現在，您可使用下列命令來取得 Azure AI 服務金鑰清單、將 *&lt;resourceName&gt;* 取代為您的 Azure AI 服務資源名稱，並將 *&lt;resourceGroup&gt;* 取代為您在其中建立的資源群組名稱。
+
+    **使用命令列**：或者，您可以使用下列命令來取得 Azure AI 服務金鑰的清單。 在 Visual Studio Code 中，開啟新終端。 然後貼上下列命令；將 *&lt;resourceName&gt;* 替換為您的 Azure AI 服務資源名稱，並將 *&lt;resourceGroup&gt;* 替換為您在其中建立的資源群組名稱。
 
     ```
     az cognitiveservices account keys list --name <resourceName> --resource-group <resourceGroup>
@@ -57,15 +60,15 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
 
     此命令會傳回 Azure AI 服務資源的金鑰清單 - 有兩個金鑰，名為 **key1** 和 **key2**。
 
-    > **秘訣**：如果您尚未驗證 Azure CLI，請執行 `az login` 並登入您的帳戶。
+    > **提示**：如果您尚未驗證 Azure CLI，請先執行 `az login` 並登入您的帳戶。
 
-3. 若要測試 Azure AI 服務，您可以使用 **curl** - HTTP 要求的命令列工具。 在 **02-ai-services-security** 資料夾中，開啟 **rest-test.cmd** 並編輯其中包含的 **curl** 命令 (如下所示)，將 *&lt;yourEndpoint&gt;* 和 *&lt;yourKey&gt;* 取代為您的端點 URI 和 **Key1** 金鑰，以在 Azure AI 服務資源中使用分析文字 API。
+2. 若要測試 Azure AI 服務，您可以使用 **curl** - HTTP 要求的命令列工具。 在 **02-ai-services-security** 資料夾中，開啟 **rest-test.cmd** 並編輯其中包含的 **curl** 命令 (如下所示)，將 *&lt;yourEndpoint&gt;* 和 *&lt;yourKey&gt;* 取代為您的端點 URI 和 **Key1** 金鑰，以在 Azure AI 服務資源中使用分析文字 API。
 
     ```bash
-    curl -X POST "<yourEndpoint>/language/:analyze-text?api-version=2023-04-01" -H "Content-Type: application/json" -H "Ocp-Apim-Subscription-Key: 81468b6728294aab99c489664a818197" --data-ascii "{'analysisInput':{'documents':[{'id':1,'text':'hello'}]}, 'kind': 'LanguageDetection'}"
+    curl -X POST "<yourEndpoint>/language/:analyze-text?api-version=2023-04-01" -H "Content-Type: application/json" -H "Ocp-Apim-Subscription-Key: <your-key>" --data-ascii "{'analysisInput':{'documents':[{'id':1,'text':'hello'}]}, 'kind': 'LanguageDetection'}"
     ```
 
-4. 儲存變更，然後執行下列命令：
+3. 儲存您的變更。 在終端機中，瀏覽至「02-ai-services-security」資料夾。 （**注意**：您可以在總管中以滑鼠右鍵按一下「02-ai-services-security」資料夾，然後選取 *在整合式終端中開啟*來執行此動作）。 然後執行下列命令：
 
     ```
     ./rest-test.cmd
@@ -73,7 +76,7 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
 
 此命令會傳回 JSON 文件，其中包含在輸入資料中偵測到的語言相關資訊 (應該是英文)。
 
-5. 如果金鑰遭到入侵，或擁有金鑰的開發人員不再需要存取權，則您可以在入口網站或使用 Azure CLI 重新產生金鑰。 執行下列命令來重新產生 **key1** 金鑰 (針對資源，取代 *&lt;resourceName&gt;* 和 *&lt;resourceGroup&gt;*)。
+4. 如果金鑰遭到入侵，或擁有金鑰的開發人員不再需要存取權，則您可以在入口網站或使用 Azure CLI 重新產生金鑰。 執行下列命令來重新產生 **key1** 金鑰 (針對資源，取代 *&lt;resourceName&gt;* 和 *&lt;resourceGroup&gt;*)。
 
     ```
     az cognitiveservices account keys regenerate --name <resourceName> --resource-group <resourceGroup> --key-name key1
@@ -81,8 +84,8 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
 
 將傳回 Azure AI 服務資源的金鑰清單 - 請注意，**key1** 自上次擷取後已變更。
 
-6. 使用舊金鑰重新執行 **rest-test** 命令 (您可以使用鍵盤上的 **^** 箭號來循環先前的命令)，並驗證其現在是否失敗。
-7. 在 *rest-test.cmd* 中編輯 **curl** 命令，將金鑰取代為新的 **key1** 值，並儲存變更。 然後重新執行 **rest-test** 命令，並驗證其是否成功。
+5. 使用舊金鑰重新執行 **rest-test** 命令 (您可以使用鍵盤上的 **^** 箭號來循環先前的命令)，並驗證其現在是否失敗。
+6. 在 *rest-test.cmd* 中編輯 **curl** 命令，將金鑰取代為新的 **key1** 值，並儲存變更。 然後重新執行 **rest-test** 命令，並驗證其是否成功。
 
 > **秘訣**：在此練習中，您已使用 Azure CLI 參數的完整名稱，例如 **--resource-group**。  您也可以使用較短的替代名稱 (例如 **-g**)，讓您的命令變得較不冗長 (但較難理解)。  [Azure AI 服務 CLI 命令參考](https://docs.microsoft.com/cli/azure/cognitiveservices?view=azure-cli-latest)會列出每個 Azure AI 服務 CLI 命令的參數選項。
 
@@ -113,7 +116,7 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
 5. 選取 [+ 產生/匯入]****，並使用下列設定新增秘密：
     - **上傳選項**：手動
     - **名稱**：AI-Services-Key *(請務必完全符合此名稱，因為稍後您將根據此名稱來執行程式碼擷取祕密)*
-    - **值**：*您的 **key1** Azure AI 服務金鑰*
+    - **祕密值**： *您的 **key1** Azure AI 服務金鑰*
 6. 選取 **建立**。
 
 ### 建立服務主體
@@ -167,16 +170,16 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
 
     ```
     dotnet add package Azure.AI.TextAnalytics --version 5.3.0
-    dotnet add package Azure.Identity --version 1.5.0
-    dotnet add package Azure.Security.KeyVault.Secrets --version 4.2.0-beta.3
+    dotnet add package Azure.Identity --version 1.12.0
+    dotnet add package Azure.Security.KeyVault.Secrets --version 4.6.0
     ```
 
     **Python**
 
     ```
     pip install azure-ai-textanalytics==5.3.0
-    pip install azure-identity==1.5.0
-    pip install azure-keyvault-secrets==4.2.0
+    pip install azure-identity==1.17.1
+    pip install azure-keyvault-secrets==4.8.0
     ```
 
 3. 檢視 **keyvault-client** 資料夾的內容，並注意其中包含組態設定的檔案：
