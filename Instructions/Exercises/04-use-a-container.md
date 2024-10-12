@@ -8,9 +8,9 @@ lab:
 
 使用 Azure 中裝載的 Azure AI 服務可讓應用程式開發人員專注於自己的程式碼基礎結構，同時也受益於由 Microsoft 管理的可調整服務。 然而，在眾多情況下，組織需要更充分掌控其服務基礎結構，以及服務之間傳遞的資料。
 
-許多 Azure AI 服務 API 都可以進行封裝，並部署在*容器*中，讓組織能夠在自己的基礎結構中裝載 Azure AI 服務；例如，在本地 Docker 伺服器、Azure 容器執行個體或 Azure Kubernetes Services 叢集中。 容器化 Azure AI 服務需要與 Azure 型 Azure AI 服務帳戶進行通訊，以支援計費；但應用程式資料不會傳遞至後端服務，而且組織對其容器的部署設定有更大的掌控權，可啟用用於驗證、可擴縮性及其他考量的自訂解決方案。
+許多 Azure AI 服務 API 都可以進行封裝，並部署在*容器*中，讓組織能夠在自己的基礎結構中裝載 Azure AI 服務；例如，在本地 Docker 伺服器、Azure 容器執行個體或 Azure Kubernetes Services 叢集中。 容器化 Azure AI 服務需要與 Azure 型 Azure AI 服務帳戶進行通訊，以支援計費；但應用程式資料不會傳遞至後端服務，而且組織對容器的部署設定有更大的掌控權，可啟用用於驗證、可擴縮性及其他考量的自訂解決方案。
 
-> **注意**：目前正在調查一個某些使用者會遇到的問題，即容器無法正確部署，且對那些容器的呼叫失敗。 此實驗室的更新會在問題解決後立即進行。
+> **注意**：目前正在調查一個問題，某些使用者會叫用容器無法正確部署的位置，而對這些容器的呼叫會失敗。 此實驗室的更新會在問題解決後立即進行。
 
 ## 在 Visual Studio Code 中，複製您的存放庫。
 
@@ -21,7 +21,7 @@ lab:
 1. 啟動 Visual Studio Code。
 2. 開啟選擇區 (SHIFT+CTRL+P) 並執行 **Git：複製 ** 命令，將 `https://github.com/MicrosoftLearning/mslearn-ai-services` 存放庫複製到本機資料夾 (哪個資料夾無關緊要)。
 3. 複製存放庫後，請在 Visual Studio Code 中開啟此資料夾。
-4. 如果需要，請等候其他檔案安裝以支援存放庫中的 C# 程式碼專案。
+4. 等候其他檔案安裝以在需要時支援存放庫中的 C# 程式碼專案
 
     > **注意**：如果系統提示您新增必要的資產來組建和偵錯，請選取 [現在不要]****。
 
@@ -50,14 +50,14 @@ lab:
 
     - **基本**：
         - **訂用帳戶**：您的 Azure 訂用帳戶**
-        - **資源群組**：**選擇包含您 Azure AI 服務資源的資源群組**
+        - 資源群組：選擇包含您 Azure AI 服務資源的資源群組
         - **容器名稱**：*輸入唯一名稱*
         - **區域**：*選擇任何可用的區域*
         - **映像來源**：其他登錄
         - **映像類型**：公用
         - **映像**：`mcr.microsoft.com/azure-cognitive-services/textanalytics/language:latest`
         - **OS 類型**：Linux
-        - **大小**：1 vcpu，12 GB 記憶體
+        - **尺寸**：1 vcpu，12 GB 記憶體
     - **網路**：
         - **網路類型**：公用
         - **DNS 名稱標籤**：*為容器端點輸入唯一的名稱*
@@ -83,7 +83,7 @@ lab:
     - **IP 位址**：此為您可以用於存取您容器執行個體的公開 IP 位址。
     - **FQDN**：這是容器執行個體資源的*完整功能變數名稱*，您可以使用其來存取容器執行個體，而不是 IP 位址。
 
-    > **注意**：在此練習中，您已將 Azure AI 服務容器映像部署為文字翻譯至 Azure 容器執行個體 (ACI) 資源。 您可以使用類似的方法將其部署到您自己的電腦或網路上的 *[Docker](https://www.docker.com/products/docker-desktop)* 主機，方法是在單一行上執行下列命令，將語言偵測容器部署到本機 Docker 執行個體，並將 *&lt;yourEndpoint&gt;* 和 *&lt;yourKey&gt;* 取代為端點 URI 和 Azure AI 服務資源的其中一個金鑰。
+    > **注意**：在此練習中，您已將 Azure AI 服務容器映像部署為文字轉譯至 Azure 容器執行個體 (ACI) 資源。 您可以使用類似的方法將其部署到您自己的電腦或網路上的 *[Docker](https://www.docker.com/products/docker-desktop)* 主機，方法是在單一行上執行下列命令，將語言偵測容器部署到本機 Docker 執行個體，並將 *&lt;yourEndpoint&gt;* 和 *&lt;yourKey&gt;* 取代為端點 URI，以及 Azure AI 服務資源的其中一個金鑰。
     > 該命令會在本機電腦上尋找映射，如果其找不到該映射，則會從 *mcr.microsoft.com* 映射登錄提取映射，並將其部署至 Docker 執行個體。 部署完成時，容器會啟動並接聽連接埠 5000 上的傳入要求。
 
     ```
@@ -98,7 +98,7 @@ lab:
     curl -X POST "http://<your_ACI_IP_address_or_FQDN>:5000/text/analytics/v3.0/languages" -H "Content-Type: application/json" --data-ascii "{'documents':[{'id':1,'text':'Hello world.'},{'id':2,'text':'Salut tout le monde.'}]}"
     ```
 
-2. 按 **Ctrl+S** 儲存指令碼變更。 請注意，您不需要指定 Azure AI 服務端點或金鑰 - 要求是由容器化服務進行處理。 該容器接著會定期與 Azure 中的服務通訊，以報告計費使用量，但不會傳送要求資料。
+2. 按 **[Ctrl+S]** 儲存指令碼變更。 請注意，您不需要指定 Azure AI 服務端點或金鑰 - 要求是由容器化服務進行處理。 該容器接著會定期與 Azure 中的服務通訊，以報告計費使用量，但不會傳送要求資料。
 3. 輸入下列命令以執行此指令碼：
 
     ```
@@ -124,4 +124,4 @@ lab:
 
 ## 其他相關資訊
 
-如需容器化 Azure AI 服務的詳細資訊，請參閱 [Azure AI 服務容器文件](https://learn.microsoft.com/azure/ai-services/cognitive-services-container-support) (部分機器翻譯)。
+如需容器化 Azure AI 服務的詳細資訊，請參閱[Azure AI 服務容器文件](https://learn.microsoft.com/azure/ai-services/cognitive-services-container-support)。
