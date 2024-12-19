@@ -10,9 +10,7 @@ lab:
 
 許多 Azure AI 服務 API 都可以進行封裝，並部署在*容器*中，讓組織能夠在自己的基礎結構中裝載 Azure AI 服務；例如，在本地 Docker 伺服器、Azure 容器執行個體或 Azure Kubernetes Services 叢集中。 容器化 Azure AI 服務需要與 Azure 型 Azure AI 服務帳戶進行通訊，以支援計費；但應用程式資料不會傳遞至後端服務，而且組織對容器的部署設定有更大的掌控權，可啟用用於驗證、可擴縮性及其他考量的自訂解決方案。
 
-> **注意**：目前正在調查一個問題，某些使用者會叫用容器無法正確部署的位置，而對這些容器的呼叫會失敗。 此實驗室的更新會在問題解決後立即進行。
-
-## 在 Visual Studio Code 中，複製您的存放庫。
+## 在 Visual Studio Code 中，複製您的存放庫
 
 您將使用 Visual Studio Code 開發您的程式碼。 您應用程式的程式碼檔案已在 GitHub 存放庫中提供。
 
