@@ -97,6 +97,9 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
 
 您必須先為 Azure AI 服務金鑰建立金鑰保存庫並新增*祕密*。
 
+選擇一個方法，建立金鑰保存庫與新增祕密：
+
+#### 使用 Azure 入口網站
 1. 記下 Azure AI 服務資源的 **key1** 值 (或將其複製到剪貼簿)。
 2. 在 Azure 入口網站的 [首頁]**** 頁面上，選取 [&#65291;建立資源]**** 按鈕、搜尋*金鑰保存庫*，並使用下列設定建立**金鑰保存庫**資源：
 
@@ -118,6 +121,33 @@ Azure AI 服務的存取通常是透過驗證金鑰來控制，這會在您一�
     - **名稱**：AI-Services-Key *(請務必完全符合此名稱，因為稍後您將根據此名稱來執行程式碼擷取祕密)*
     - **祕密值**： *您的 **key1** Azure AI 服務金鑰*
 6. 選取 **建立**。
+
+#### 使用 Azure CLI
+或者，您可以使用 Azure CLi，建立金鑰保存庫與新增祕密。
+
+1. 在 Visual Studio Code 中開啟終端機。
+2. 執行下列命令來建立金鑰保存庫，以及使用所需的金鑰保存庫名稱、資源群組名稱和 Azure 區域 (例如：`eastus`) 取代 `<keyVaultName>`、`<resourceGroup>` 和 `<location>`：
+
+    ```
+    az keyvault create \
+      --name <key-vault-name> \
+      --resource-group <resource-group-name> \
+      --location <region> \
+      --sku standard \
+      --enable-rbac-authorization false
+    ```
+    旗標 `--enable-rbac-authorization false` 可確保將權限模型設為「保存庫存取原則」(預設)。
+
+3. 將 Azure AI 服務金鑰新增為金鑰保存庫中的祕密。 使用金鑰保存庫名稱取代 `<keyVaultName>`，以及使用 Azure AI 服務 key1 的值取代 `<your-key1-value>`：
+
+    ```
+    az keyvault secret set \
+    --vault-name <key-vault-name> \
+    --name AI-Services-Key \
+    --value <your-azure-ai-services-key>
+    ```
+
+您現已建立金鑰保存庫，以及將 Azure AI 服務金鑰儲存為名為 `AI-Services-Key` 的祕密。
 
 ### 建立服務主體
 
